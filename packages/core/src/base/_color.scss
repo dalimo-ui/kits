@@ -1,0 +1,29 @@
+$colors: primary, neutral, success, danger, warning;
+
+@mixin generate-palette($color) {
+  --#{$color}-hover: color-mix(in srgb, var(--#{$color}), var(--on-#{$color}) 10%);
+  --#{$color}-subtle: color-mix(in srgb, var(--#{$color}), var(--background) 90%);
+  --#{$color}-subtle-hover: color-mix(in srgb, var(--#{$color}), var(--background) 85%);
+  --#{$color}-surface-hover: color-mix(in srgb, var(--#{$color}), var(--background) 95%);
+  --on-#{$color}-subtle: color-mix(in srgb, var(--#{$color}), black 40%);
+}
+
+:root {
+  // Define base colors
+  --background: #fafafa;
+  --surface: #ffffff;
+  --primary: #0f52ba;
+  --on-primary: #ffffff;
+  --success: #198754;
+  --on-success: #ffffff;
+  --danger: #dc3545;
+  --on-danger: #ffffff;
+  --warning: #ffc107;
+  --on-warning: #000000;
+  --neutral: #212529;
+  --on-neutral: #ffffff;
+  // Generate variants for each color
+  @each $color in $colors {
+    @include generate-palette($color);
+  }
+}

@@ -1,0 +1,14 @@
+@use "../base/color" as *;
+
+@each $color in $colors {
+  .role--#{$color} {
+    --color-main: var(--#{$color});
+    --color-main-hover: var(--#{$color}-hover);
+    --color-subtle: var(--#{$color}-subtle);
+    --color-subtle-hover: var(--#{$color}-subtle-hover);
+    --color-surface-hover: var(--#{$color}-surface-hover);
+    --color-on-main: var(--on-#{$color});
+    --color-on-subtle: var(--on-#{$color}-subtle);
+    --color-on-surface: var(--on-#{$color}-subtle);
+  }
+}
