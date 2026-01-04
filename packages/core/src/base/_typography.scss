@@ -1,0 +1,109 @@
+@use "sass:map";
+@use "sass:list";
+
+// Font Sizes
+$font-size-base: 1rem !default; // 16px
+$font-size-scales: (
+  xs: 0.75,
+  // 12px
+  sm: 0.875,
+  // 14px
+  md: 1,
+  // 16px
+  lg: 1.125,
+  // 18px
+  xl: 1.25,
+  // 20px
+  2xl: 1.5,
+  // 24px
+  3xl: 1.875,
+  // 30px
+);
+
+// Line Heights
+$line-height-scales: (
+  xs: 1,
+  // 16px
+  sm: 1.25,
+  // 20px
+  md: 1.5,
+  // 24px
+  lg: 1.75,
+  // 28px
+  xl: 1.75,
+  // 28px
+  2xl: 2,
+  // 32px
+  3xl: 2.25,
+  // 36px
+);
+
+// Variants
+$typography-variants: (
+  "body": (
+    "name": "body",
+    "weight": 400,
+    "sizes": (
+      "md",
+      "sm",
+      "xs",
+    ),
+  ),
+  "heading": (
+    "name": "h",
+    "weight": 700,
+    "sizes": (
+      "2xl",
+      "xl",
+      "lg",
+      "md",
+      "sm",
+    ),
+  ),
+  "label": (
+    "name": "label",
+    "weight": 500,
+    "sizes": (
+      "md",
+      "sm",
+      "xs",
+    ),
+  ),
+  "display": (
+    "name": "display",
+    "weight": 600,
+    "sizes": (
+      "3xl",
+      "2xl",
+      "xl",
+    ),
+  ),
+);
+
+:root {
+  // Font Families
+  --font-family-body: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif,
+    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  --font-family-code: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  // Font Weights
+  @each $key, $value in $typography-variants {
+    --font-weight-#{$key}: #{map.get($value, "weight")};
+  }
+  // Font Sizes
+  @each $key, $value in $font-size-scales {
+    --font-size-#{$key}: #{calc($value * $font-size-base)};
+  }
+  // Line Heights
+  @each $key, $value in $line-height-scales {
+    --line-height-#{$key}: #{calc($value * $font-size-base)};
+  }
+}
+
+@mixin typography($variant, $level) {
+  $size: list.nth(map.get(map.get($typography-variants, $variant), "sizes"), $level);
+
+  font-family: var(--font-family-#{$variant}, var(--font-family-body));
+  font-weight: var(--font-weight-#{$variant}, var(--font-weight-body));
+  font-size: var(--font-size-#{$size});
+  line-height: calc(var(--leading, 1) * var(--line-height-#{$size}) / var(--font-size-#{$size}));
+}

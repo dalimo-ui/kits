@@ -1,4 +1,5 @@
 @use "utilities/role";
+@use "utilities/text";
 
 *,
 ::after,
@@ -12,7 +13,28 @@
 }
 
 body {
-  @extend .role--neutral;
+  @extend .role--neutral, .text--body1, .leading--normal;
   background-color: var(--background);
   color: var(--color-on-surface);
+}
+
+h1 {
+  @extend .text--h1;
+}
+
+h2 {
+  @extend .text--h2;
+}
+
+h3 {
+  @extend .text--h3;
+}
+
+h4 {
+  @extend .text--h4;
+}
+
+h5,
+h6 {
+  @extend .text--h5;
 }
