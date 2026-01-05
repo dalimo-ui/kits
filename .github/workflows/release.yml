@@ -1,5 +1,6 @@
 name: Release
 
+# Trigger workflow on push to main branch
 on:
   push:
     branches:
@@ -14,27 +15,25 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # 1️⃣ Checkout repo
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 9
-
-      - name: Setup Node
+      # 2️⃣ Setup Node
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: pnpm
           registry-url: https://registry.npmjs.org
 
+      # 3️⃣ Install dependencies using npm
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: npm ci
 
-      - name: Create Release PR or Publish
+      # 4️⃣ Run Changesets Action
+      - name: Create Release / Publish
         uses: changesets/action@v1
         with:
-          publish: pnpm publish -r
+          publish: npm publish --workspaces --access public
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
