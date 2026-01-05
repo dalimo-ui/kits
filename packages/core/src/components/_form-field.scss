@@ -1,0 +1,35 @@
+@use "../base/typography" as *;
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+
+  &__label {
+    @include typography("label", 2);
+    color: var(--color-on-surface);
+  }
+  &__input {
+    padding: 0.5rem 0.75rem; //calc(1 * var(--spacing-unit));
+    border-radius: 0.375rem;
+    @include typography("body", 1);
+
+    &:focus {
+      box-shadow: 0 0 0 3px rgba(var(--color-main-rgb), 0.3);
+      outline: 2px solid var(--color-main);
+    }
+  }
+  &__hint {
+    @include typography("body", 3);
+    color: var(--color-on-surface-secondary);
+  }
+  &--disabled {
+    opacity: 0.6;
+    pointer-events: none;
+  }
+  &--invalid {
+    & .form-field__label {
+      color: var(--danger);
+    }
+  }
+}

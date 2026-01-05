@@ -1,0 +1,24 @@
+@use "sass:map";
+@use "../base/typography" as *;
+
+@each $variant-key, $variant-data in $typography-variants {
+  $variant-name: map.get($variant-data, "name");
+  $variant-sizes: map.get($variant-data, "sizes");
+  $counter: 1;
+
+  @each $variant-size in $variant-sizes {
+    .text--#{$variant-name}#{$counter} {
+      @include typography($variant-key, $counter);
+    }
+
+    $counter: $counter + 1;
+  }
+}
+
+.leading--normal {
+  --leading: 1;
+}
+
+.leading--relaxed {
+  --leading: 1.5;
+}
