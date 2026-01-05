@@ -1,5 +1,6 @@
 @use "utilities/role";
 @use "utilities/text";
+@use "components/button";
 
 *,
 ::after,
@@ -37,4 +38,8 @@ h4 {
 h5,
 h6 {
   @extend .text--h5;
+}
+
+button {
+  @extend .btn;
 }
