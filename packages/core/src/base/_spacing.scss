@@ -1,0 +1,38 @@
+$spacer: 0.5rem !default;
+
+@function spacing-calc($scale) {
+  @if $scale == "0" {
+    @return 0;
+  }
+  @if $scale == auto {
+    @return auto;
+  } @else {
+    @return calc($scale * var(--spacing-unit));
+  }
+}
+
+@function spacing($scale) {
+  @if $scale == 0 {
+    @return 0;
+  }
+  @if $scale == auto {
+    @return auto;
+  } @else {
+    @return calc($scale * var(--spacing-unit));
+  }
+}
+
+@function spacing($scale-y, $scale-x: null) {
+  @if $scale-x {
+    @return spacing-calc($scale-y) spacing-calc($scale-x);
+  }
+  @return spacing-calc($scale-y);
+}
+
+@function spacing2($scale-y, $scale-x) {
+  @return calc($scale-y * var(--spacing-unit)) calc($scale-x * var(--spacing-unit));
+}
+
+:root {
+  --spacing-unit: #{$spacer};
+}
