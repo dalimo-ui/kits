@@ -1,6 +1,6 @@
 {
   "name": "@dalimo/css",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Dalimo CSS framework",
   "main": "dist/dalimo.css",
   "style": "dist/dalimo.css",
