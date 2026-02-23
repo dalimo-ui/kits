@@ -1,0 +1,55 @@
+$displays: inline, inline-block, block, flex, inline-flex, grid, inline-grid !default;
+
+@each $display in $displays {
+  .#{$display} {
+    display: $display;
+  }
+}
+.hidden {
+  display: none;
+}
+.visible {
+  visibility: visible;
+}
+.invisible {
+  visibility: hidden;
+}
+
+// .overflow-auto {
+//   overflow: auto !important;
+// }
+// .overflow-hidden {
+//   overflow: hidden !important;
+// }
+// .overflow-scroll {
+//   overflow: scroll !important;
+// }
+// .overflow-x-auto {
+//   overflow-x: auto !important;
+// }
+// .overflow-x-hidden {
+//   overflow-x: hidden !important;
+// }
+// .overflow-x-scroll {
+//   overflow-x: scroll !important;
+// }
+// .overflow-y-auto {
+//   overflow-y: auto !important;
+// }
+// .overflow-y-hidden {
+//   overflow-y: hidden !important;
+// }
+// .overflow-y-scroll {
+//   overflow-y: scroll !important;
+// }
+// .text-wrap {
+//   white-space: normal !important;
+// }
+// .text-nowrap {
+//   white-space: nowrap !important;
+// }
+// .text-truncate {
+//   overflow: hidden !important;
+//   text-overflow: ellipsis !important;
+//   white-space: nowrap !important;
+// }
