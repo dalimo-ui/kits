@@ -1,0 +1,48 @@
+@use "sass:map";
+@use "../base/spacing" as *;
+
+$properties: (
+  m: margin,
+  p: padding,
+);
+
+$sides: (
+  x: inline,
+  y: block,
+  t: top,
+  b: bottom,
+  s: inline-start,
+  e: inline-end,
+);
+
+$other-scales: (
+  "0": 0,
+  "auto": auto,
+);
+
+$properties-scales: map.merge($scales, $other-scales);
+
+@each $property-key, $property-name in $properties {
+  @each $scale-name, $scale-value in $properties-scales {
+    .#{$property-key}-#{$scale-name} {
+      #{$property-name}: spacing($scale-value);
+    }
+    @each $side-key, $side-name in $sides {
+      .#{$property-key}#{$side-key}-#{$scale-name} {
+        #{$property-name}-#{$side-name}: spacing($scale-value);
+      }
+    }
+  }
+}
+
+@each $scale-name, $scale-value in $scales {
+  .gap-#{$scale-name} {
+    gap: spacing($scale-value) !important;
+  }
+  .gap-x-#{$scale-name} {
+    column-gap: spacing($scale-value) !important;
+  }
+  .gap-y-#{$scale-name} {
+    row-gap: spacing($scale-value) !important;
+  }
+}
