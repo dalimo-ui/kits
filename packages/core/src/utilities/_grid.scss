@@ -1,0 +1,7 @@
+$columns: 1, 2, 3, 4, 5, 6;
+
+@each $col in $columns {
+  .grid-cols-#{$col} {
+    grid-template-columns: repeat($col, 1fr);
+  }
+}

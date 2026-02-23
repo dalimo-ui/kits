@@ -2,13 +2,9 @@
 @use "base/color";
 @use "base/typography";
 @use "base/radius";
-@use "utilities/role";
-@use "utilities/text";
-@use "utilities/spacing";
-// @use "utilities/display";
-// @use "utilities/grid";
+@use "utilities";
 @use "components/button";
-// @use "components/card";
+@use "components/card";
 @use "components/form-field";
 // @use "components/chip";
 // @use "components/icon";
