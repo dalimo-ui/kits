@@ -1,0 +1,25 @@
+@use "../base/spacing" as *;
+@use "../base/typography" as *;
+
+.chip {
+  padding: spacing(0.5, 1);
+  border-radius: var(--radius-md);
+  background-color: var(--color-subtle);
+  color: var(--color-on-subtle);
+  @include typography("label", 2);
+  &--sm {
+    @include typography("label", 3);
+  }
+  &--lg {
+    @include typography("label", 1);
+  }
+}
+
+.btn--subtle .chip {
+  background-color: var(--color-on-subtle);
+  color: var(--color-subtle);
+}
+
+:is(.btn, .form-field) .chip {
+  border-radius: var(--radius-sm);
+}
