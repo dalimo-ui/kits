@@ -1,5 +1,11 @@
 # @dalimo/css
 
+## 0.4.0
+
+### Minor Changes
+
+- 43f95d4: Add displays utilities
+
 ## 0.3.1
 
 ### Patch Changes
