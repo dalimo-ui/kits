@@ -1,5 +1,11 @@
 # @dalimo/css
 
+## 0.3.1
+
+### Patch Changes
+
+- 1064c14: Add spacing utilities
+
 ## 0.3.0
 
 ### Minor Changes
