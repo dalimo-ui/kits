@@ -1,0 +1,38 @@
+:is(html, body):has(:modal, .dialog:popover-open) {
+  overflow: hidden;
+  scrollbar-gutter: stable;
+}
+
+.dialog,
+dialog {
+  background-color: transparent;
+  margin: auto;
+  transition: opacity 0.3s ease-out, transform 0.3s ease-out, display 0.3s ease-out allow-discrete,
+    overlay 0.3s ease-out allow-discrete;
+  opacity: 0;
+  transform: scale(0.95);
+
+  &::backdrop {
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(1px);
+    transition: opacity 0.3s ease-out;
+    opacity: 0;
+  }
+
+  &[open],
+  &:popover-open {
+    opacity: 1;
+    transform: scale(1);
+    @starting-style {
+      opacity: 0;
+      transform: scale(0.9);
+    }
+
+    &::backdrop {
+      opacity: 1;
+      @starting-style {
+        opacity: 0;
+      }
+    }
+  }
+}
