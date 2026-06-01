@@ -1,0 +1,241 @@
+@use "sass:string";
+
+// =============================================
+// Dalimo Naming System
+// =============================================
+
+// ---------------------------------------------
+// Config
+// ---------------------------------------------
+$dl-prefix: "dl" !default;
+$dl-component-prefix: "c" !default;
+$dl-layout-prefix: "l" !default;
+$dl-template-prefix: "t" !default;
+$dl-utility-prefix: "u" !default;
+$dl-state-prefix: "is" !default;
+$dl-css-var-prefix: "dl" !default;
+
+// ---------------------------------------------
+// Internal helpers
+// ---------------------------------------------
+@function dl-join($parts...) {
+  $result: "";
+
+  @each $part in $parts {
+    @if $part != null and $part != "" {
+      @if $result == "" {
+        $result: "#{$part}";
+      } @else {
+        $result: "#{$result}-#{$part}";
+      }
+    }
+  }
+
+  @return $result;
+}
+
+@function dl-class($parts...) {
+  @return ".#{dl-join($parts...)}";
+}
+
+// ---------------------------------------------
+// Public class name functions
+// ---------------------------------------------
+
+/// Base namespaced class
+/// example: class-name("button") => .dl-button
+@function class-name($name) {
+  @return dl-class($dl-prefix, $name);
+}
+
+@function component-base($block) {
+  @return dl-join($dl-prefix, $block); // "dl-button"
+}
+
+/// Component block
+/// example: component-class("button") => .dl-c-button
+@function component-class($name) {
+  @return dl-class(component-base($name));
+}
+
+/// Component element
+/// example: component-element("button", "icon") => .dl-c-button__icon
+@function component-element($block, $element) {
+  @return dl-class("#{component-base($block)}__#{$element}");
+}
+
+/// Component modifier
+/// example: component-modifier("button", "primary") => .dl-c-button--primary
+@function component-modifier($block, $modifier) {
+  @return dl-class("#{component-base($block)}--#{$modifier}");
+}
+
+/// Component element modifier
+/// example: component-element-modifier("button", "icon", "end") => .dl-c-button__icon--end
+@function component-element-modifier($block, $element, $modifier) {
+  @return dl-class("#{component-base($block)}__#{$element}--#{$modifier}");
+}
+
+/// Layout class
+/// example: layout-class("shell") => .dl-l-shell
+@function layout-class($name) {
+  @return dl-class($dl-prefix, $dl-layout-prefix, $name);
+}
+
+/// Layout element
+/// example: layout-element("shell", "sidebar") => .dl-l-shell__sidebar
+@function layout-element($block, $element) {
+  @return ".#{dl-join($dl-prefix, $dl-layout-prefix, $block)}__#{$element}";
+}
+
+/// Layout modifier
+/// example: layout-modifier("shell", "dashboard") => .dl-l-shell--dashboard
+@function layout-modifier($block, $modifier) {
+  @return ".#{dl-join($dl-prefix, $dl-layout-prefix, $block)}--#{$modifier}";
+}
+
+/// Template class
+/// example: template-class("dashboard") => .dl-t-dashboard
+@function template-class($name) {
+  @return dl-class($dl-prefix, $dl-template-prefix, $name);
+}
+
+/// Utility class
+/// example: utility-class("mt-4") => .dl-u-mt-4
+@function utility-class($name) {
+  @return dl-class($dl-prefix, $dl-utility-prefix, $name);
+}
+
+/// State class
+/// example: state-class("active") => .is-active
+@function state-class($name) {
+  @return ".#{$dl-state-prefix}-#{$name}";
+}
+
+// ---------------------------------------------
+// CSS Variable helpers
+// ---------------------------------------------
+
+/// Raw CSS variable name
+/// example: css-var-name("color-primary") => --dl-color-primary
+@function css-var-name($token) {
+  @return string.unquote("--#{dl-join($dl-css-var-prefix, $token)}");
+}
+
+/// CSS variable usage
+/// example: css-var("color-primary") => var(--dl-color-primary)
+@function css-var($token, $fallback: null) {
+  $name: css-var-name($token);
+
+  @if $fallback == null {
+    @return string.unquote("var(#{$name})");
+  }
+
+  @return string.unquote("var(#{$name}, #{$fallback})");
+}
+
+// ---------------------------------------------
+// Short aliases
+// ---------------------------------------------
+
+@function cn($name) {
+  @return class-name($name);
+}
+
+@function c($name) {
+  @return component-class($name);
+}
+
+@function ce($block, $element) {
+  @return component-element($block, $element);
+}
+
+@function cm($block, $modifier) {
+  @return component-modifier($block, $modifier);
+}
+
+@function cem($block, $element, $modifier) {
+  @return component-element-modifier($block, $element, $modifier);
+}
+
+@function l($name) {
+  @return layout-class($name);
+}
+
+@function le($block, $element) {
+  @return layout-element($block, $element);
+}
+
+@function lm($block, $modifier) {
+  @return layout-modifier($block, $modifier);
+}
+
+@function t($name) {
+  @return template-class($name);
+}
+
+@function u($name) {
+  @return utility-class($name);
+}
+
+@function s($name) {
+  @return state-class($name);
+}
+
+@function v($token, $fallback: null) {
+  @return css-var($token, $fallback);
+}
+
+@function vn($token) {
+  @return css-var-name($token);
+}
+
+// ---------------------------------------------
+// Mixins
+// ---------------------------------------------
+
+@mixin component($name) {
+  #{c($name)} {
+    @content;
+  }
+}
+
+@mixin component-element($block, $element) {
+  #{ce($block, $element)} {
+    @content;
+  }
+}
+
+@mixin component-modifier($block, $modifier) {
+  #{cm($block, $modifier)} {
+    @content;
+  }
+}
+
+@mixin layout($name) {
+  #{l($name)} {
+    @content;
+  }
+}
+
+@mixin utility($name) {
+  #{u($name)} {
+    @content;
+  }
+}
+
+@mixin template($name) {
+  #{t($name)} {
+    @content;
+  }
+}
+
+@mixin state($name) {
+  &#{s($name)} {
+    @content;
+  }
+}
+
+@mixin variable($name, $value) {
+  #{vn($name)}: $value;
+}
