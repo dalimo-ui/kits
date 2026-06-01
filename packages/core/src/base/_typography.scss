@@ -1,109 +1,143 @@
 @use "sass:map";
 @use "sass:list";
+@use "../naming" as *;
 
 // Font Sizes
 $font-size-base: 1rem !default; // 16px
 $font-size-scales: (
-  xs: 0.75,
-  // 12px
-  sm: 0.875,
-  // 14px
-  md: 1,
-  // 16px
-  lg: 1.125,
-  // 18px
-  xl: 1.25,
-  // 20px
-  2xl: 1.5,
-  // 24px
-  3xl: 1.875,
-  // 30px
+  /* 12px */ xs: 0.75,
+  /* 14px */ sm: 0.875,
+  /* 16px */ md: 1,
+  /* 20px */ lg: 1.25,
+  /* 24px */ xl: 1.5,
+  /* 28px */ 2xl: 1.75,
+  /* 32px */ 3xl: 2
 );
 
 // Line Heights
 $line-height-scales: (
-  xs: 1,
-  // 16px
-  sm: 1.25,
-  // 20px
-  md: 1.5,
-  // 24px
-  lg: 1.75,
-  // 28px
-  xl: 1.75,
-  // 28px
-  2xl: 2,
-  // 32px
-  3xl: 2.25,
-  // 36px
-);
-
-// Variants
-$typography-variants: (
-  "body": (
-    "name": "body",
-    "weight": 400,
-    "sizes": (
-      "md",
-      "sm",
-      "xs",
-    ),
-  ),
-  "heading": (
-    "name": "h",
-    "weight": 700,
-    "sizes": (
-      "2xl",
-      "xl",
-      "lg",
-      "md",
-      "sm",
-    ),
-  ),
-  "label": (
-    "name": "label",
-    "weight": 500,
-    "sizes": (
-      "md",
-      "sm",
-      "xs",
-    ),
-  ),
-  "display": (
-    "name": "display",
-    "weight": 600,
-    "sizes": (
-      "3xl",
-      "2xl",
-      "xl",
-    ),
-  ),
+  /* 16px */ xs: 1,
+  /* 20px */ sm: 1.25,
+  /* 24px */ md: 1.5,
+  /* 32px */ lg: 2,
+  /* 40px */ xl: 2.5,
+  /* 48px */ 2xl: 3,
+  /* 56px */ 3xl: 3.5
 );
 
 :root {
-  // Font Families
-  --font-family-body: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif,
-    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-  --font-family-code: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-  // Font Weights
-  @each $key, $value in $typography-variants {
-    --font-weight-#{$key}: #{map.get($value, "weight")};
-  }
   // Font Sizes
   @each $key, $value in $font-size-scales {
-    --font-size-#{$key}: #{calc($value * $font-size-base)};
+    @include variable(font-size-#{$key}, #{calc($value * $font-size-base)});
   }
   // Line Heights
   @each $key, $value in $line-height-scales {
-    --line-height-#{$key}: #{calc($value * $font-size-base)};
+    @include variable(line-height-#{$key}, #{calc($value * $font-size-base)});
   }
 }
 
 @mixin typography($variant, $level) {
-  $size: list.nth(map.get(map.get($typography-variants, $variant), "sizes"), $level);
+  // $size: list.nth(map.get(map.get($typography-variants, $variant), "sizes"), $level);
 
-  font-family: var(--font-family-#{$variant}, var(--font-family-body));
-  font-weight: var(--font-weight-#{$variant}, var(--font-weight-body));
-  font-size: var(--font-size-#{$size});
-  line-height: calc(var(--leading, 1) * var(--line-height-#{$size}) / var(--font-size-#{$size}));
+  // font-family: var(--font-family-#{$variant}, var(--font-family-body));
+  // font-weight: var(--#{$variant}-font-weight, var(--font-weight-body));
+  // font-size: var(--font-size-#{$size});
+  // line-height: calc(var(--leading, 1) * var(--line-height-#{$size}) / var(--font-size-#{$size}));
+  // --size: var(--line-height-#{$size});
+}
+
+// Truncate Text Mixin
+@mixin truncate($lines: 1) {
+  @if $lines == 1 {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  } @else {
+    display: -webkit-box;
+    -webkit-line-clamp: $lines;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+}
+
+// ---------------
+// Semantic Tokens
+// ---------------
+
+$typography-sizes: lg, md, sm, xs;
+
+$typographies: (
+  "body": (
+    "weight": 400,
+    "size-map": (
+      "lg": "lg",
+      "md": "md",
+      "sm": "sm",
+      "xs": "xs",
+    ),
+  ),
+  "heading": (
+    "weight": 700,
+    "size-map": (
+      "lg": "xl",
+      "md": "lg",
+      "sm": "md",
+      "xs": "sm",
+    ),
+  ),
+  "label": (
+    "weight": 500,
+    "size-map": (
+      "lg": "lg",
+      "md": "md",
+      "sm": "sm",
+      "xs": "xs",
+    ),
+  ),
+  "display": (
+    "weight": 600,
+    "size-map": (
+      "lg": "3xl",
+      "md": "2xl",
+      "sm": "xl",
+      "xs": "lg",
+    ),
+  ),
+);
+
+$body-font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif,
+  "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+$code-font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+
+:root {
+  @include variable("body-font-family", $body-font-family);
+  @include variable("code-font-family", $code-font-family);
+
+  @each $variant, $variant-data in $typographies {
+    $size-map: map.get($variant-data, "size-map");
+    $weight: map.get($variant-data, "weight");
+    @include variable(#{$variant}-font-weight, #{$weight});
+
+    @each $size, $maped-size in $size-map {
+      @include variable(#{$variant}-#{$size}-font-size, v(font-size-#{$maped-size}));
+      $line-height: calc(v(leading, 1) * v(line-height-#{$maped-size}) / v(font-size-#{$maped-size}));
+      @include variable(#{$variant}-#{$size}-line-height, $line-height);
+      @include variable(#{$variant}-#{$size}-icon-size, v(line-height-#{$maped-size}));
+    }
+  }
+}
+
+@mixin typography-variant($variant) {
+  font-family: v(#{$variant}-font-family, v(body-font-family));
+  font-weight: v(#{$variant}-font-weight);
+}
+
+@mixin typography-icon-size($variant, $size) {
+  @include variable("icon-size", v(#{$variant}-#{$size}-icon-size));
+}
+
+@mixin typography-size($variant, $size) {
+  font-size: v(#{$variant}-#{$size}-font-size);
+  line-height: v(#{$variant}-#{$size}-line-height);
+  @include typography-icon-size($variant, $size);
 }

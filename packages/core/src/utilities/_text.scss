@@ -1,24 +1,56 @@
 @use "sass:map";
+@use "../naming" as *;
+@use "../base/color" as *;
 @use "../base/typography" as *;
 
-@each $variant-key, $variant-data in $typography-variants {
-  $variant-name: map.get($variant-data, "name");
-  $variant-sizes: map.get($variant-data, "sizes");
-  $counter: 1;
+@each $variant, $variant-data in $typographies {
+  $size-map: map.get($variant-data, "size-map");
 
-  @each $variant-size in $variant-sizes {
-    .text--#{$variant-name}#{$counter} {
-      @include typography($variant-key, $counter);
+  @each $size, $maped-size in $size-map {
+    @include utility(text-#{$variant}-#{$size}) {
+      @include typography-variant($variant);
+      @include typography-size($variant, $size);
+      margin: 0;
     }
-
-    $counter: $counter + 1;
   }
 }
 
-.leading--normal {
-  --leading: 1;
+@each $color in $colors {
+  @include utility(text-#{$color}) {
+    color: v(color-#{$color});
+  }
 }
 
-.leading--relaxed {
-  --leading: 1.5;
+@include utility(text-muted) {
+  color: v("color-muted");
 }
+
+@include utility(text-disabled) {
+  color: v("color-disabled");
+}
+
+// .leading--normal {
+//   --leading: 1;
+// }
+
+// .leading--relaxed {
+//   --leading: 1.5;
+// }
+
+// // Text Overflow
+// .truncate {
+//   @include truncate(1);
+// }
+
+// .line-clamp-2 {
+//   @include truncate(2);
+// }
+// .line-clamp-3 {
+//   @include truncate(3);
+// }
+// .line-clamp-4 {
+//   @include truncate(4);
+// }
+// .line-clamp-5 {
+//   @include truncate(5);
+// }

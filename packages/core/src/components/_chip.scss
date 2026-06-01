@@ -1,25 +1,53 @@
+@use "../naming" as *;
+@use "../base/color" as *;
 @use "../base/spacing" as *;
 @use "../base/typography" as *;
 
-.chip {
-  padding: spacing(0.5, 1);
-  border-radius: var(--radius-md);
-  background-color: var(--color-subtle);
-  color: var(--color-on-subtle);
-  @include typography("label", 2);
-  &--sm {
-    @include typography("label", 3);
-  }
-  &--lg {
-    @include typography("label", 1);
+$name: chip;
+$chip-gap: 0.25;
+
+@include component($name) {
+  gap: spacing($chip-gap);
+  padding: spacing($chip-gap, 2 * $chip-gap);
+  border-radius: v(radius-md);
+  background-color: v(palette-subtle);
+  color: v(palette-on-subtle);
+  @include typography-variant("label");
+
+  // &--prefer-square {
+  //   display: inline-grid;
+  //   place-items: center;
+  //   min-width: calc(2 * spacing($chip-gap) + var(--size));
+  //   box-sizing: border-box;
+  // }
+  // &__icon {
+  //   margin-inline-start: spacing(-1 * $chip-gap);
+  // }
+}
+
+// Size Modifiers
+@include component-modifier($name, "lg") {
+  @include typography-size("label", "md");
+}
+@include component-modifier($name, "md") {
+  @include typography-size("label", "sm");
+}
+@include component-modifier($name, "sm") {
+  @include typography-size("label", "xs");
+}
+
+// Color Modifiers
+@each $color in $colors {
+  @include component-modifier($name, $color) {
+    @include palette-variables($color);
   }
 }
 
-.btn--subtle .chip {
-  background-color: var(--color-on-subtle);
-  color: var(--color-subtle);
-}
+// .btn--subtle .chip {
+//   background-color: var(--color-on-subtle);
+//   color: var(--color-subtle);
+// }
 
-:is(.btn, .form-field) .chip {
-  border-radius: var(--radius-sm);
-}
+// :is(.btn, .form-field) .chip {
+//   border-radius: var(--radius-sm);
+// }

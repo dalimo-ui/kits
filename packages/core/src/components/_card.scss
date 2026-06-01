@@ -1,61 +1,55 @@
+@use "../naming" as *;
 @use "../base/typography" as *;
 @use "../base/spacing" as *;
 
-.card {
+$card: card;
+
+@mixin card-padding() {
+  padding-inline: v(card-padding);
+  padding-top: v(card-padding);
+  &:last-child {
+    padding-bottom: v(card-padding);
+  }
+}
+
+@include component($card) {
   display: flex;
   flex-direction: column;
-  border-radius: var(--radius-lg);
-  background-color: var(--surface);
-  color: var(--color-on-surface);
+  border-radius: v(radius-lg);
+  background-color: v(color-surface);
+  color: v(color-on-surface);
+  @include variable(card-padding, spacing(2));
+}
 
-  &__header {
-    padding: spacing(1, 2);
+// Size Modifiers
+@include component-modifier($card, "lg") {
+  @include variable(card-padding, spacing(3));
+}
+@include component-modifier($card, "md") {
+  @include variable(card-padding, spacing(2));
+}
+@include component-modifier($card, "sm") {
+  @include variable(card-padding, spacing(1));
+}
+
+// Clickable Modifier
+@include component-modifier($card, "clickable") {
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  &:hover {
+    background-color: v(color-surface-hover);
+    box-shadow: 0 2px 4px 2px rgba(0, 0, 0, 0.05), 0 0 4px 0 rgba(0, 0, 0, 0.1);
   }
+}
 
-  &__title {
-    @include typography("heading", 4);
-  }
-
-  &__desc {
-    @include typography("body", 2);
-  }
-
-  &__actions {
-    float: inline-end;
-    margin-inline-end: spacing(-1);
-  }
-
-  &__body {
-    flex-grow: 1;
-    padding: spacing(1, 2);
-  }
-
-  &__footer {
-    display: flex;
-    flex-direction: row-reverse;
-    gap: spacing(1);
-    padding: spacing(1);
-  }
-
-  &--lg {
-    .card__header {
-      padding: spacing(2, 3);
-    }
-
-    .card__title {
-      @include typography("heading", 2);
-    }
-
-    .card__actions {
-      margin-inline-end: spacing(-1);
-    }
-
-    .card__body {
-      padding: spacing(1, 3);
-    }
-
-    .card__footer {
-      padding: spacing(2);
-    }
-  }
+// Elements
+@include component-element($card, "header") {
+  @include card-padding();
+}
+@include component-element($card, "body") {
+  flex-grow: 1;
+  @include card-padding();
+}
+@include component-element($card, "footer") {
+  @include card-padding();
 }

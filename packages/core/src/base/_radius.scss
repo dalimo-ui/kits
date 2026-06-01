@@ -1,5 +1,13 @@
+@use "../naming" as *;
+
+$radii: (
+  sm: 0.125rem,
+  md: 0.25rem,
+  lg: 0.5rem,
+);
+
 :root {
-  --radius-sm: 0.125rem;
-  --radius-md: 0.25rem;
-  --radius-lg: 0.5rem;
+  @each $size, $value in $radii {
+    @include variable("radius-#{$size}", $value);
+  }
 }
