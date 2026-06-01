@@ -1,29 +1,48 @@
+@use "../naming" as *;
+
 $colors: primary, neutral, success, danger, warning;
 
-@mixin generate-palette($color) {
-  --#{$color}-hover: color-mix(in srgb, var(--#{$color}), var(--on-#{$color}) 10%);
-  --#{$color}-subtle: color-mix(in srgb, var(--#{$color}), var(--background) 90%);
-  --#{$color}-subtle-hover: color-mix(in srgb, var(--#{$color}), var(--background) 85%);
-  --#{$color}-surface-hover: color-mix(in srgb, var(--#{$color}), var(--background) 95%);
-  --on-#{$color}-subtle: color-mix(in srgb, var(--#{$color}), black 40%);
+@mixin generate-color-palette($name) {
+  @include variable("color-#{$name}-hover", color-mix(in srgb, v(color-#{$name}), v(color-on-#{$name}) 10%));
+  @include variable("color-#{$name}-subtle", color-mix(in srgb, v(color-#{$name}), v(color-surface) 90%));
+  @include variable("color-#{$name}-subtle-hover", color-mix(in srgb, v(color-#{$name}), v(color-surface) 85%));
+  @include variable("color-#{$name}-surface-hover", color-mix(in srgb, v(color-#{$name}), v(color-surface) 90%));
+  @include variable("color-on-#{$name}-subtle", color-mix(in srgb, v(color-#{$name}), v(color-on-surface) 40%));
+}
+
+@mixin palette-variables($name) {
+  @include variable("palette-main", v(color-#{$name}));
+  @include variable("palette-subtle", v(color-#{$name}-subtle));
+  @include variable("palette-main-hover", v(color-#{$name}-hover));
+  @include variable("palette-subtle-hover", v(color-#{$name}-subtle-hover));
+  @include variable("palette-surface-hover", v(color-#{$name}-surface-hover));
+  @include variable("palette-on-main", v(color-on-#{$name}));
+  @include variable("palette-on-subtle", v(color-on-#{$name}-subtle));
+  @include variable("palette-on-surface", v(color-on-#{$name}-subtle));
 }
 
 :root {
-  // Define base colors
-  --background: #fafafa;
-  --surface: #ffffff;
-  --primary: #0f52ba;
-  --on-primary: #ffffff;
-  --success: #198754;
-  --on-success: #ffffff;
-  --danger: #dc3545;
-  --on-danger: #ffffff;
-  --warning: #ffc107;
-  --on-warning: #000000;
-  --neutral: #212529;
-  --on-neutral: #ffffff;
-  // Generate variants for each color
+  @include variable("color-background", #f3f3f3);
+  @include variable("color-surface", #ffffff);
+  @include variable("color-on-surface", rgba(0, 0, 0, 0.85));
+
+  @include variable("color-divider", rgba(0, 0, 0, 0.12));
+
+  @include variable("color-muted", hsl(210, 7%, 35%));
+  @include variable("color-disabled", hsl(210, 0%, 60%));
+
+  @include variable("color-primary", #0f52ba);
+  @include variable("color-on-primary", #ffffff);
+  @include variable("color-neutral", #212529);
+  @include variable("color-on-neutral", #ffffff);
+  @include variable("color-success", #198754);
+  @include variable("color-on-success", #ffffff);
+  @include variable("color-warning", #ffc107);
+  @include variable("color-on-warning", #000000);
+  @include variable("color-danger", #dc3545);
+  @include variable("color-on-danger", #ffffff);
+
   @each $color in $colors {
-    @include generate-palette($color);
+    @include generate-color-palette($color);
   }
 }

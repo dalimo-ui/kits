@@ -1,0 +1,38 @@
+@use "../naming" as *;
+@use "../base/spacing" as *;
+
+$divider: divider;
+$group: divider-group;
+
+@include component($divider) {
+  border-style: solid;
+  border-color: v(color-divider);
+  align-self: stretch;
+  margin: 0;
+}
+
+// Orientation Modifiers
+@include component-modifier($divider, "horizontal") {
+  border-width: 1px 0 0 0;
+}
+@include component-modifier($divider, "vertical") {
+  border-width: 0 0 0 1px;
+}
+
+// Divider Group
+@include component($group) {
+  align-self: stretch;
+  display: flex;
+  align-items: center;
+  gap: spacing(1);
+
+  #{c($divider)} {
+    flex: 1 1;
+    align-self: center;
+  }
+}
+
+// Orientation Modifiers
+@include component-modifier($group, "vertical") {
+  writing-mode: vertical-rl;
+}

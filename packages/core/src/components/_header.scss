@@ -1,0 +1,125 @@
+@use "sass:map";
+@use "../naming" as *;
+@use "../base/spacing" as *;
+@use "../base/typography" as *;
+
+$header: header;
+$header-title: title;
+$header-actions: actions;
+$header-content: content;
+$header-leading: leading;
+$header-subtitle: subtitle;
+$header-main: main;
+$header-body: body;
+$header-trailing: trailing;
+$header-title-wrapper: title-wrapper;
+
+$header-actions-margin: (
+  "lg": 0,
+  "md": 0,
+  "sm": -1,
+  "xs": -1,
+);
+
+$header-subtitle-margin: (
+  "lg": 0.5,
+  "md": 0.5,
+  "sm": 0.5,
+  "xs": 0.5,
+);
+
+@function header-actions-margin($size) {
+  @return spacing(map.get($header-actions-margin, $size));
+}
+
+@function header-content-gap($size) {
+  @return spacing(map.get($header-subtitle-margin, $size));
+}
+
+@include component($header) {
+  display: flex;
+  flex-direction: column;
+  gap: spacing(1);
+
+  // &--spacing {
+  //   &-1 {
+  //     margin-block: spacing(3, 2);
+  //   }
+  //   &-2 {
+  //     margin-block: spacing(2, 1);
+  //   }
+  //   &-3 {
+  //     margin-block: spacing(2, 1);
+  //   }
+  //   &-4 {
+  //     margin-block: spacing(1, 1);
+  //   }
+  // }
+}
+
+// Size Modifiers
+@each $size in $typography-sizes {
+  @include component-modifier($header, $size) {
+    @include component-element($header, $header-title) {
+      @include typography-size("heading", $size);
+    }
+    @include component-element($header, $header-leading) {
+      @include typography-icon-size("heading", $size);
+    }
+    @include component-element($header, $header-actions) {
+      margin: header-actions-margin($size);
+    }
+    @include component-element($header, $header-content) {
+      gap: header-content-gap($size);
+    }
+  }
+}
+
+// Elements
+@include component-element($header, $header-main) {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: spacing(2);
+}
+
+@include component-element($header, $header-body) {
+  display: flex;
+  gap: spacing(1);
+}
+
+@include component-element($header, $header-content) {
+  display: flex;
+  flex-direction: column;
+}
+
+@include component-element($header, $header-title-wrapper) {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: spacing(1);
+}
+
+@include component-element($header, $header-title) {
+  margin: 0;
+  @include typography-variant("heading");
+}
+
+@include component-element($header, $header-subtitle) {
+  flex-basis: 100%;
+  color: v(color-muted);
+  @include typography-variant("body");
+  @include typography-size("body", "sm");
+}
+
+@include component-element($header, $header-trailing) {
+  display: flex;
+  gap: spacing(0.5);
+}
+
+@include component-element($header, $header-actions) {
+  // todo: The following styles must be delegated to the '.stack' class.
+  display: flex;
+  gap: spacing(1);
+}
